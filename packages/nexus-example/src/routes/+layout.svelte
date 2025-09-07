@@ -3,9 +3,9 @@
 </script>
 
 <div class="min-h-screen bg-gray-50">
-	<nav class="bg-white shadow-sm border-b border-gray-200">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="flex justify-between h-16">
+	<nav class="border-b border-gray-200 bg-white shadow-sm">
+		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+			<div class="flex h-16 justify-between">
 				<div class="flex items-center">
 					<h1 class="text-xl font-semibold">🚀 Nexus Admin</h1>
 				</div>
@@ -18,7 +18,7 @@
 			</div>
 		</div>
 	</nav>
-	
+
 	<main>
 		<slot />
 	</main>

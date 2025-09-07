@@ -52,7 +52,7 @@ export const postgresPlugin: NexusPlugin = {
 					capabilities: ['crud', 'transactions', 'joins']
 				}
 			};
-			
+
 			context.container.resolve('nexus:config').registerDataSource(config);
 			context.logger.info('PostgreSQL database configured');
 		}
@@ -78,7 +78,7 @@ export const auth0Plugin: NexusPlugin = {
 					audience: 'https://api.yourapp.com'
 				}
 			};
-			
+
 			context.container.resolve('nexus:config').registerAuthProvider(config);
 			context.logger.info('Auth0 authentication configured');
 		}
@@ -101,8 +101,8 @@ export const mockDataPlugin: NexusPlugin = {
 
 			const mockStats = {
 				totalUsers: mockUsers.length,
-				activeUsers: mockUsers.filter(u => u.active).length,
-				adminUsers: mockUsers.filter(u => u.role === 'admin').length,
+				activeUsers: mockUsers.filter((u) => u.active).length,
+				adminUsers: mockUsers.filter((u) => u.role === 'admin').length,
 				revenue: '$45,280',
 				growth: '+12.5%'
 			};
@@ -119,14 +119,14 @@ let initialized = false;
 
 export async function initializeNexus() {
 	if (initialized) return;
-	
+
 	console.log('Initializing Nexus kernel...');
-	
+
 	await kernel.registerPlugin(postgresPlugin);
 	await kernel.registerPlugin(auth0Plugin);
 	await kernel.registerPlugin(mockDataPlugin);
 	await kernel.bootstrap();
-	
+
 	initialized = true;
 	console.log('Nexus kernel ready!');
 }
@@ -134,7 +134,7 @@ export async function initializeNexus() {
 export function getNexusData() {
 	const container = kernel.getContainer();
 	const config = kernel.getConfiguration();
-	
+
 	try {
 		return {
 			users: container.resolve('data:users'),

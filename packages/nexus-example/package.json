@@ -15,6 +15,7 @@
 		"example:demo": "tsx src/examples/demo.ts",
 		"example:startup": "tsx src/examples/startup.ts",
 		"example:enterprise": "tsx src/examples/enterprise.ts",
+		"example:data": "tsx src/examples/data-interface-test.ts",
 		"examples": "npm run example:demo"
 	},
 	"dependencies": {

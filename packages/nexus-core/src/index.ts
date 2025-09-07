@@ -14,5 +14,36 @@ export type {
 	AuthProviderConfig
 } from './plugins/types';
 
+// Data layer exports
+export {
+	BaseDataSource,
+	DataSourceManager,
+	DataSourceError,
+	ConnectionError,
+	QueryError,
+	SchemaError,
+	TransactionError,
+	QueryBuilder,
+	SchemaUtils,
+	DataUtils
+} from './data/index';
+
+export type {
+	DataSource,
+	Query,
+	QueryResult,
+	WhereClause,
+	OrderClause,
+	Transaction,
+	DatabaseSchema,
+	TableSchema,
+	FieldSchema,
+	ConnectionConfig,
+	DataSourceCapabilities,
+	FieldType,
+	FieldValue,
+	PrimaryKey
+} from './data/index';
+
 // Re-export main types
 export type { NexusConfig, NexusKernelOptions } from './kernel/types';
