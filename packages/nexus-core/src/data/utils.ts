@@ -111,17 +111,17 @@ export class SchemaUtils {
 				if (isValidUuid(String(value))) return 'uuid';
 				if (isValidDate(String(value))) return 'date';
 				return value.length > 255 ? 'text' : 'string';
-			
+
 			case 'number':
 				return 'number';
-			
+
 			case 'boolean':
 				return 'boolean';
-			
+
 			case 'object':
 				if (value instanceof Date) return 'datetime';
 				return 'json';
-			
+
 			default:
 				return 'string';
 		}
@@ -137,15 +137,15 @@ export class SchemaUtils {
 
 		// Collect all field names
 		const fieldNames = new Set<string>();
-		data.forEach(row => {
-			Object.keys(row).forEach(key => fieldNames.add(key));
+		data.forEach((row) => {
+			Object.keys(row).forEach((key) => fieldNames.add(key));
 		});
 
 		// Analyze each field
-		const fields: FieldSchema[] = Array.from(fieldNames).map(fieldName => {
+		const fields: FieldSchema[] = Array.from(fieldNames).map((fieldName) => {
 			const values = data
-				.map(row => row[fieldName])
-				.filter(val => val !== null && val !== undefined);
+				.map((row) => row[fieldName])
+				.filter((val) => val !== null && val !== undefined);
 
 			if (values.length === 0) {
 				return {
@@ -157,13 +157,14 @@ export class SchemaUtils {
 
 			// Infer type from first non-null value
 			const inferredType = this.inferFieldType(values[0]);
-			
+
 			// Check if field is nullable
-			const nullable = data.some(row => row[fieldName] === null || row[fieldName] === undefined);
+			const nullable = data.some((row) => row[fieldName] === null || row[fieldName] === undefined);
 
 			// Check for potential primary key
 			const isUnique = new Set(values).size === values.length;
-			const couldBePrimaryKey = isUnique && !nullable && (inferredType === 'number' || inferredType === 'uuid');
+			const couldBePrimaryKey =
+				isUnique && !nullable && (inferredType === 'number' || inferredType === 'uuid');
 
 			return {
 				name: fieldName,
@@ -175,12 +176,12 @@ export class SchemaUtils {
 		});
 
 		// Try to identify primary key
-		let primaryKey = fields.find(f => f.autoIncrement)?.name;
+		let primaryKey = fields.find((f) => f.autoIncrement)?.name;
 		if (!primaryKey) {
-			primaryKey = fields.find(f => f.name.toLowerCase().includes('id') && f.unique)?.name;
+			primaryKey = fields.find((f) => f.name.toLowerCase().includes('id') && f.unique)?.name;
 		}
 		if (!primaryKey) {
-			primaryKey = fields.find(f => f.unique && !f.nullable)?.name;
+			primaryKey = fields.find((f) => f.unique && !f.nullable)?.name;
 		}
 
 		return {
@@ -205,33 +206,33 @@ export class SchemaUtils {
 		switch (field.type) {
 			case 'string':
 				return typeof value === 'string' && (!field.length || value.length <= field.length);
-			
+
 			case 'number':
 				return typeof value === 'number';
-			
+
 			case 'boolean':
 				return typeof value === 'boolean';
-			
+
 			case 'date':
 			case 'datetime':
 			case 'time':
 				return value instanceof Date || isValidDate(String(value));
-			
+
 			case 'email':
 				return typeof value === 'string' && isValidEmail(value);
-			
+
 			case 'url':
 				return typeof value === 'string' && isValidUrl(value);
-			
+
 			case 'uuid':
 				return typeof value === 'string' && isValidUuid(value);
-			
+
 			case 'json':
 				return typeof value === 'object';
-			
+
 			case 'text':
 				return typeof value === 'string';
-			
+
 			default:
 				return true; // Unknown type, allow anything
 		}
@@ -249,7 +250,7 @@ export class SchemaUtils {
 		return field.name
 			.replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase
 			.replace(/_/g, ' ') // snake_case
-			.replace(/\b\w/g, l => l.toUpperCase()); // Title Case
+			.replace(/\b\w/g, (l) => l.toUpperCase()); // Title Case
 	}
 
 	/**
@@ -257,7 +258,7 @@ export class SchemaUtils {
 	 */
 	static isFieldHidden(field: FieldSchema): boolean {
 		if (field.metadata?.hidden) return true;
-		
+
 		// Hide common system fields
 		const systemFields = ['created_at', 'updated_at', 'deleted_at', 'password_hash'];
 		return systemFields.includes(field.name.toLowerCase());
@@ -272,7 +273,7 @@ export class DataUtils {
 	 * Convert database record to display format
 	 */
 	static formatRecordForDisplay(
-		record: Record<string, FieldValue>, 
+		record: Record<string, FieldValue>,
 		schema: TableSchema
 	): Record<string, string> {
 		const formatted: Record<string, string> = {};
@@ -296,25 +297,25 @@ export class DataUtils {
 		switch (field.type) {
 			case 'date':
 				return value instanceof Date ? value.toLocaleDateString() : String(value);
-			
+
 			case 'datetime':
 				return value instanceof Date ? value.toLocaleString() : String(value);
-			
+
 			case 'time':
 				return value instanceof Date ? value.toLocaleTimeString() : String(value);
-			
+
 			case 'boolean':
 				return value ? 'Yes' : 'No';
-			
+
 			case 'json':
 				return typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value);
-			
+
 			case 'number':
 				if (typeof value === 'number') {
 					return field.precision ? value.toFixed(field.scale || 2) : value.toString();
 				}
 				return String(value);
-			
+
 			default:
 				return String(value);
 		}
@@ -332,22 +333,22 @@ export class DataUtils {
 			case 'number':
 				const num = Number(input);
 				return isNaN(num) ? undefined : num;
-			
+
 			case 'boolean':
 				return ['true', 'yes', '1', 'on'].includes(input.toLowerCase());
-			
+
 			case 'date':
 			case 'datetime':
 				const date = new Date(input);
 				return isNaN(date.getTime()) ? undefined : date;
-			
+
 			case 'json':
 				try {
 					return JSON.parse(input);
 				} catch {
 					return undefined;
 				}
-			
+
 			default:
 				return input;
 		}

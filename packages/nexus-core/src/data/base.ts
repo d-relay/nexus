@@ -171,8 +171,8 @@ export abstract class BaseDataSource implements DataSource {
 	}
 
 	async bulkUpdate?<T = Record>(
-		table: string, 
-		data: Array<{ where: WhereClause[], data: Partial<T> }>
+		table: string,
+		data: Array<{ where: WhereClause[]; data: Partial<T> }>
 	): Promise<QueryResult<T>> {
 		if (!this.capabilities.supportsBulkOperations) {
 			// Fallback to individual updates
@@ -206,7 +206,7 @@ export abstract class BaseDataSource implements DataSource {
 		if (!tableName || typeof tableName !== 'string') {
 			throw new SchemaError('Table name must be a non-empty string');
 		}
-		
+
 		if (!/^[a-zA-Z][a-zA-Z0-9_]*$/.test(tableName)) {
 			throw new SchemaError('Table name contains invalid characters');
 		}
@@ -239,30 +239,40 @@ export abstract class BaseDataSource implements DataSource {
 	protected buildWhereClause(where: WhereClause[]): string {
 		// This is a basic implementation - subclasses should override for database-specific syntax
 		return where
-			.map(clause => {
+			.map((clause) => {
 				const { field, operator } = clause;
-				
+
 				switch (operator) {
-					case 'eq': return `${field} = ?`;
-					case 'ne': return `${field} != ?`;
-					case 'gt': return `${field} > ?`;
-					case 'gte': return `${field} >= ?`;
-					case 'lt': return `${field} < ?`;
-					case 'lte': return `${field} <= ?`;
-					case 'like': return `${field} LIKE ?`;
-					case 'in': return `${field} IN (?)`;
-					case 'notin': return `${field} NOT IN (?)`;
-					case 'isnull': return `${field} IS NULL`;
-					case 'isnotnull': return `${field} IS NOT NULL`;
-					default: throw new QueryError(`Unsupported operator: ${operator}`);
+					case 'eq':
+						return `${field} = ?`;
+					case 'ne':
+						return `${field} != ?`;
+					case 'gt':
+						return `${field} > ?`;
+					case 'gte':
+						return `${field} >= ?`;
+					case 'lt':
+						return `${field} < ?`;
+					case 'lte':
+						return `${field} <= ?`;
+					case 'like':
+						return `${field} LIKE ?`;
+					case 'in':
+						return `${field} IN (?)`;
+					case 'notin':
+						return `${field} NOT IN (?)`;
+					case 'isnull':
+						return `${field} IS NULL`;
+					case 'isnotnull':
+						return `${field} IS NOT NULL`;
+					default:
+						throw new QueryError(`Unsupported operator: ${operator}`);
 				}
 			})
 			.join(' AND ');
 	}
 
 	protected buildOrderClause(orderBy: OrderClause[]): string {
-		return orderBy
-			.map(clause => `${clause.field} ${clause.direction.toUpperCase()}`)
-			.join(', ');
+		return orderBy.map((clause) => `${clause.field} ${clause.direction.toUpperCase()}`).join(', ');
 	}
 }

@@ -26,7 +26,7 @@ export class DataSourceManager {
 
 		this.dataSources.set(dataSource.id, dataSource);
 		this.logger.info(`Data source registered: ${dataSource.name} (${dataSource.id})`);
-		
+
 		this.eventBus.emit('datasource:registered', {
 			id: dataSource.id,
 			name: dataSource.name,
@@ -55,13 +55,13 @@ export class DataSourceManager {
 
 		this.dataSources.delete(id);
 		this.logger.info(`Data source unregistered: ${dataSource.name} (${id})`);
-		
+
 		this.eventBus.emit('datasource:unregistered', { id });
 
 		// Reset primary if this was the primary
 		if (this.primaryDataSourceId === id) {
 			this.primaryDataSourceId = undefined;
-			
+
 			// Set first available as primary
 			const firstId = this.dataSources.keys().next().value;
 			if (firstId) {
@@ -101,7 +101,7 @@ export class DataSourceManager {
 
 		const oldPrimary = this.primaryDataSourceId;
 		this.primaryDataSourceId = id;
-		
+
 		this.logger.info(`Primary data source set to: ${id}`);
 		this.eventBus.emit('datasource:primary-changed', {
 			oldPrimary,
@@ -120,7 +120,7 @@ export class DataSourceManager {
 	 * Get data sources by type
 	 */
 	getByType(type: string): DataSource[] {
-		return Array.from(this.dataSources.values()).filter(ds => ds.type === type);
+		return Array.from(this.dataSources.values()).filter((ds) => ds.type === type);
 	}
 
 	/**
@@ -134,7 +134,7 @@ export class DataSourceManager {
 	 * Get connection status of all data sources
 	 */
 	getStatus(): Array<{ id: string; name: string; type: string; connected: boolean }> {
-		return Array.from(this.dataSources.values()).map(ds => ({
+		return Array.from(this.dataSources.values()).map((ds) => ({
 			id: ds.id,
 			name: ds.name,
 			type: ds.type,
@@ -147,11 +147,11 @@ export class DataSourceManager {
 	 */
 	async connect(id: string, config: ConnectionConfig): Promise<void> {
 		const dataSource = this.get(id);
-		
+
 		try {
 			await dataSource.connect(config);
 			this.logger.info(`Data source connected: ${dataSource.name} (${id})`);
-			
+
 			this.eventBus.emit('datasource:connected', {
 				id,
 				name: dataSource.name,
@@ -171,7 +171,7 @@ export class DataSourceManager {
 	 * Connect all data sources using their configurations
 	 */
 	async connectAll(configs: Record<string, ConnectionConfig>): Promise<void> {
-		const promises = Array.from(this.dataSources.keys()).map(async id => {
+		const promises = Array.from(this.dataSources.keys()).map(async (id) => {
 			const config = configs[id];
 			if (config) {
 				await this.connect(id, config);
@@ -188,11 +188,11 @@ export class DataSourceManager {
 	 */
 	async disconnect(id: string): Promise<void> {
 		const dataSource = this.get(id);
-		
+
 		if (dataSource.isConnected()) {
 			await dataSource.disconnect();
 			this.logger.info(`Data source disconnected: ${dataSource.name} (${id})`);
-			
+
 			this.eventBus.emit('datasource:disconnected', {
 				id,
 				name: dataSource.name
@@ -204,7 +204,7 @@ export class DataSourceManager {
 	 * Disconnect all data sources
 	 */
 	async disconnectAll(): Promise<void> {
-		const promises = Array.from(this.dataSources.values()).map(async ds => {
+		const promises = Array.from(this.dataSources.values()).map(async (ds) => {
 			if (ds.isConnected()) {
 				await ds.disconnect();
 			}
@@ -220,7 +220,7 @@ export class DataSourceManager {
 	 */
 	async healthCheck(): Promise<Record<string, boolean>> {
 		const results: Record<string, boolean> = {};
-		
+
 		const promises = Array.from(this.dataSources.entries()).map(async ([id, ds]) => {
 			try {
 				if (ds.isConnected()) {
@@ -255,7 +255,7 @@ export class DataSourceManager {
 
 		return {
 			total: dataSources.length,
-			connected: dataSources.filter(ds => ds.isConnected()).length,
+			connected: dataSources.filter((ds) => ds.isConnected()).length,
 			types,
 			primary: this.primaryDataSourceId
 		};

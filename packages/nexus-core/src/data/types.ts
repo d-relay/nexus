@@ -19,7 +19,18 @@ export interface Query {
 
 export interface WhereClause {
 	field: string;
-	operator: 'eq' | 'ne' | 'gt' | 'gte' | 'lt' | 'lte' | 'like' | 'in' | 'notin' | 'isnull' | 'isnotnull';
+	operator:
+		| 'eq'
+		| 'ne'
+		| 'gt'
+		| 'gte'
+		| 'lt'
+		| 'lte'
+		| 'like'
+		| 'in'
+		| 'notin'
+		| 'isnull'
+		| 'isnotnull';
 	value: FieldValue;
 }
 
@@ -60,12 +71,12 @@ export interface FieldSchema {
 	metadata?: FieldMetadata;
 }
 
-export type FieldType = 
-	| 'string' 
-	| 'number' 
-	| 'boolean' 
-	| 'date' 
-	| 'datetime' 
+export type FieldType =
+	| 'string'
+	| 'number'
+	| 'boolean'
+	| 'date'
+	| 'datetime'
 	| 'time'
 	| 'uuid'
 	| 'json'
@@ -131,12 +142,14 @@ export interface ConnectionConfig {
 	database: string;
 	username?: string;
 	password?: string;
-	ssl?: boolean | {
-		rejectUnauthorized?: boolean;
-		ca?: string;
-		cert?: string;
-		key?: string;
-	};
+	ssl?:
+		| boolean
+		| {
+				rejectUnauthorized?: boolean;
+				ca?: string;
+				cert?: string;
+				key?: string;
+		  };
 	pool?: {
 		min?: number;
 		max?: number;
@@ -178,28 +191,28 @@ export interface DataSource {
 	readonly name: string;
 	readonly type: string;
 	readonly capabilities: DataSourceCapabilities;
-	
+
 	// Connection management
 	connect(config: ConnectionConfig): Promise<void>;
 	disconnect(): Promise<void>;
 	isConnected(): boolean;
 	ping(): Promise<boolean>;
-	
+
 	// Schema operations
 	getSchema(): Promise<DatabaseSchema>;
 	getTableSchema(tableName: string): Promise<TableSchema>;
 	createTable(schema: TableSchema): Promise<void>;
 	dropTable(tableName: string): Promise<void>;
 	alterTable(tableName: string, changes: TableSchemaChange[]): Promise<void>;
-	
+
 	// Query operations
 	query<T = Record>(query: Query): Promise<QueryResult<T>>;
 	rawQuery<T = Record>(sql: string, params?: unknown[]): Promise<QueryResult<T>>;
-	
+
 	// CRUD helpers
 	findOne<T = Record>(table: string, where: WhereClause[]): Promise<T | null>;
 	findMany<T = Record>(
-		table: string, 
+		table: string,
 		options?: {
 			where?: WhereClause[];
 			orderBy?: OrderClause[];
@@ -210,18 +223,21 @@ export interface DataSource {
 	create<T = Record>(table: string, data: Partial<T>): Promise<T>;
 	update<T = Record>(table: string, where: WhereClause[], data: Partial<T>): Promise<T[]>;
 	delete(table: string, where: WhereClause[]): Promise<number>;
-	
+
 	// Transaction support
 	beginTransaction(): Promise<Transaction>;
 	withTransaction<T>(callback: (tx: Transaction) => Promise<T>): Promise<T>;
-	
+
 	// Utility methods
 	exists(table: string, where: WhereClause[]): Promise<boolean>;
 	count(table: string, where?: WhereClause[]): Promise<number>;
-	
+
 	// Bulk operations (if supported)
 	bulkInsert?<T = Record>(table: string, data: Partial<T>[]): Promise<QueryResult<T>>;
-	bulkUpdate?<T = Record>(table: string, data: Array<{ where: WhereClause[], data: Partial<T> }>): Promise<QueryResult<T>>;
+	bulkUpdate?<T = Record>(
+		table: string,
+		data: Array<{ where: WhereClause[]; data: Partial<T> }>
+	): Promise<QueryResult<T>>;
 	bulkDelete?(table: string, where: WhereClause[][]): Promise<number>;
 }
 
@@ -255,7 +271,7 @@ export class ConnectionError extends DataSourceError {
 
 export class QueryError extends DataSourceError {
 	constructor(
-		message: string, 
+		message: string,
 		public readonly query?: Query | string,
 		details?: unknown
 	) {
