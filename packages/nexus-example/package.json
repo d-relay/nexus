@@ -15,7 +15,7 @@
 		"example:core": "tsx src/examples/demo.ts"
 	},
 	"dependencies": {
-		"@nexus/core": "workspace:*"
+		"@nexus/core": "file:../nexus-core"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^6.0.0",

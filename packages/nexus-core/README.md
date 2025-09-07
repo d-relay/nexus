@@ -37,13 +37,13 @@ npm install @nexus/core
 import { NexusKernel } from '@nexus/core';
 
 const kernel = new NexusKernel({
-	config: {
-		app: {
-			name: 'Enterprise Admin',
-			version: '1.0.0',
-			environment: 'production'
-		}
-	}
+ config: {
+  app: {
+   name: 'Enterprise Admin',
+   version: '1.0.0',
+   environment: 'production'
+  }
+ }
 });
 
 // Users install their chosen adapters
@@ -79,29 +79,29 @@ await kernel.bootstrap();
 import type { NexusPlugin, DataSourceConfig } from '@nexus/core';
 
 const postgresAdapter: NexusPlugin = {
-	id: 'postgres-adapter',
-	name: 'PostgreSQL Adapter',
-	version: '1.0.0',
-	hooks: {
-		onLoad: async (context) => {
-			const config: DataSourceConfig = {
-				id: 'main-db',
-				name: 'PostgreSQL Database',
-				adapter: '@nexus/postgres-adapter',
-				enabled: true,
-				config: {
-					host: process.env.DB_HOST,
-					port: process.env.DB_PORT,
-					database: process.env.DB_NAME
-				},
-				metadata: {
-					capabilities: ['crud', 'transactions', 'joins']
-				}
-			};
+ id: 'postgres-adapter',
+ name: 'PostgreSQL Adapter',
+ version: '1.0.0',
+ hooks: {
+  onLoad: async (context) => {
+   const config: DataSourceConfig = {
+    id: 'main-db',
+    name: 'PostgreSQL Database',
+    adapter: '@nexus/postgres-adapter',
+    enabled: true,
+    config: {
+     host: process.env.DB_HOST,
+     port: process.env.DB_PORT,
+     database: process.env.DB_NAME
+    },
+    metadata: {
+     capabilities: ['crud', 'transactions', 'joins']
+    }
+   };
 
-			context.container.resolve('nexus:config').registerDataSource(config);
-		}
-	}
+   context.container.resolve('nexus:config').registerDataSource(config);
+  }
+ }
 };
 ```
 
@@ -109,30 +109,30 @@ const postgresAdapter: NexusPlugin = {
 
 ```typescript
 const auth0Adapter: NexusPlugin = {
-	id: 'auth0-adapter',
-	name: 'Auth0 Integration',
-	version: '1.0.0',
-	hooks: {
-		onLoad: async (context) => {
-			const config: AuthProviderConfig = {
-				id: 'auth0-main',
-				name: 'Auth0 SSO',
-				adapter: '@nexus/auth0-adapter',
-				enabled: true,
-				priority: 100,
-				config: {
-					domain: process.env.AUTH0_DOMAIN,
-					clientId: process.env.AUTH0_CLIENT_ID,
-					audience: process.env.AUTH0_AUDIENCE
-				},
-				metadata: {
-					features: ['sso', 'mfa', 'rbac']
-				}
-			};
+ id: 'auth0-adapter',
+ name: 'Auth0 Integration',
+ version: '1.0.0',
+ hooks: {
+  onLoad: async (context) => {
+   const config: AuthProviderConfig = {
+    id: 'auth0-main',
+    name: 'Auth0 SSO',
+    adapter: '@nexus/auth0-adapter',
+    enabled: true,
+    priority: 100,
+    config: {
+     domain: process.env.AUTH0_DOMAIN,
+     clientId: process.env.AUTH0_CLIENT_ID,
+     audience: process.env.AUTH0_AUDIENCE
+    },
+    metadata: {
+     features: ['sso', 'mfa', 'rbac']
+    }
+   };
 
-			context.container.resolve('nexus:config').registerAuthProvider(config);
-		}
-	}
+   context.container.resolve('nexus:config').registerAuthProvider(config);
+  }
+ }
 };
 ```
 
@@ -224,25 +224,25 @@ GraphQL       LDAP         etc...
 ```typescript
 // Main kernel
 class NexusKernel {
-	constructor(options?: NexusKernelOptions);
-	bootstrap(): Promise<void>;
-	registerPlugin(plugin: NexusPlugin): Promise<void>;
-	getContainer(): DIContainer;
-	getConfiguration(): NexusConfig;
+ constructor(options?: NexusKernelOptions);
+ bootstrap(): Promise<void>;
+ registerPlugin(plugin: NexusPlugin): Promise<void>;
+ getContainer(): DIContainer;
+ getConfiguration(): NexusConfig;
 }
 
 // Configuration manager
 class ConfigManager {
-	registerDataSource(config: DataSourceConfig): void;
-	registerAuthProvider(config: AuthProviderConfig): void;
-	getEnabledDataSources(): DataSourceConfig[];
-	getEnabledAuthProviders(): AuthProviderConfig[];
+ registerDataSource(config: DataSourceConfig): void;
+ registerAuthProvider(config: AuthProviderConfig): void;
+ getEnabledDataSources(): DataSourceConfig[];
+ getEnabledAuthProviders(): AuthProviderConfig[];
 }
 
 // Dependency injection
 class DIContainer {
-	registerSingleton<T>(token: string, service: T): void;
-	resolve<T>(token: string): T;
+ registerSingleton<T>(token: string, service: T): void;
+ resolve<T>(token: string): T;
 }
 ```
 
@@ -250,14 +250,14 @@ class DIContainer {
 
 ```typescript
 interface NexusPlugin {
-	id: string;
-	name: string;
-	version: string;
-	hooks: {
-		onLoad?(context: PluginContext): Promise<void>;
-		onInit?(context: PluginContext): Promise<void>;
-		onDestroy?(context: PluginContext): Promise<void>;
-	};
+ id: string;
+ name: string;
+ version: string;
+ hooks: {
+  onLoad?(context: PluginContext): Promise<void>;
+  onInit?(context: PluginContext): Promise<void>;
+  onDestroy?(context: PluginContext): Promise<void>;
+ };
 }
 ```
 

@@ -1,51 +1,45 @@
 {
 	"name": "@nexus/core",
 	"version": "0.1.0",
-	"description": "Core framework for building admin panels and internal tools",
+	"description": "Database & Auth agnostic admin framework core",
 	"type": "module",
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
-		},
-		"./kernel": {
-			"types": "./dist/kernel/index.d.ts",
-			"import": "./dist/kernel/index.js"
-		},
-		"./plugins": {
-			"types": "./dist/plugins/index.d.ts",
-			"import": "./dist/plugins/index.js"
-		}
-	},
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"dist",
-		"README.md"
-	],
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsc --watch",
-		"clean": "rm -rf dist",
-		"prepublishOnly": "npm run clean && npm run build"
+		"test": "vitest",
+		"lint": "eslint src --ext ts --report-unused-disable-directives --max-warnings 0",
+		"format": "prettier --write \"src/**/*.ts\"",
+		"format:check": "prettier --check \"src/**/*.ts\""
 	},
+	"files": [
+		"dist"
+	],
 	"keywords": [
 		"admin",
-		"dashboard",
-		"framework",
+		"framework", 
 		"typescript",
-		"plugin-system",
-		"dependency-injection"
+		"database-agnostic",
+		"auth-agnostic"
 	],
-	"author": "Nexus Team",
-	"license": "MIT",
 	"dependencies": {
 		"zod": "^4.1.5"
 	},
 	"devDependencies": {
-		"typescript": "^5.0.0"
+		"@types/node": "^22",
+		"eslint": "^9.35.0",
+		"prettier": "^3.6.2",
+		"typescript": "^5.9.2",
+		"vitest": "^3.2.4"
 	},
 	"engines": {
-		"node": ">=18"
+		"node": ">=20"
 	}
 }
