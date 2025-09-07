@@ -1,5 +1,5 @@
 import { NexusKernel, LogLevel } from '@nexus/core';
-import type { NexusPlugin, DataSourceConfig, AuthProviderConfig } from '@nexus/core';
+import type { NexusPlugin, PluginContext, DataSourceConfig, AuthProviderConfig } from '@nexus/core';
 
 /**
  * Startup setup example
@@ -32,7 +32,7 @@ const mongoPlugin: NexusPlugin = {
 	name: 'MongoDB',
 	version: '1.0.0',
 	hooks: {
-		onLoad: async (context) => {
+		onLoad: async (context: PluginContext) => {
 			const config: DataSourceConfig = {
 				id: 'mongo',
 				name: 'MongoDB',
@@ -50,7 +50,7 @@ const mongoPlugin: NexusPlugin = {
 				}
 			};
 
-			context.container.resolve<any>('nexus:config').registerDataSource(config);
+			context.container.resolve('nexus:config').registerDataSource(config);
 			context.logger.info('MongoDB connected');
 		}
 	}
@@ -62,7 +62,7 @@ const localAuthPlugin: NexusPlugin = {
 	name: 'Local Auth',
 	version: '1.0.0',
 	hooks: {
-		onLoad: async (context) => {
+		onLoad: async (context: PluginContext) => {
 			const config: AuthProviderConfig = {
 				id: 'local',
 				name: 'Email/Password',
@@ -89,7 +89,7 @@ async function bootstrap() {
 	await kernel.registerPlugin(localAuthPlugin);
 	await kernel.bootstrap();
 
-	console.log('✅ Dashboard ready!');
+	console.log('\n✅ Dashboard ready!');
 	console.log('   - Database: MongoDB (Local)');
 	console.log('   - Auth: Email/Password');
 	console.log('   - Mode: Development');

@@ -1,5 +1,5 @@
 import { NexusKernel, LogLevel } from '@nexus/core';
-import type { NexusPlugin, DataSourceConfig, AuthProviderConfig } from '@nexus/core';
+import type { NexusPlugin, DataSourceConfig, AuthProviderConfig, PluginContext } from '@nexus/core';
 
 /**
  * Main demonstration of Nexus architecture
@@ -13,7 +13,7 @@ const postgresAdapter: NexusPlugin = {
 	version: '1.0.0',
 	description: 'Production-grade PostgreSQL integration',
 	hooks: {
-		onLoad: async (context) => {
+		onLoad: async (context: PluginContext) => {
 			context.logger.info('🐘 Initializing PostgreSQL adapter');
 
 			const config: DataSourceConfig = {
@@ -56,7 +56,7 @@ const mongoAdapter: NexusPlugin = {
 	version: '1.0.0',
 	description: 'NoSQL database integration',
 	hooks: {
-		onLoad: async (context) => {
+		onLoad: async (context: PluginContext) => {
 			context.logger.info('🍃 Initializing MongoDB adapter');
 
 			const config: DataSourceConfig = {
@@ -85,7 +85,7 @@ const auth0Adapter: NexusPlugin = {
 	name: 'Auth0 SSO',
 	version: '1.0.0',
 	hooks: {
-		onLoad: async (context) => {
+		onLoad: async (context: PluginContext) => {
 			context.logger.info('🔐 Initializing Auth0 SSO');
 
 			const config: AuthProviderConfig = {
@@ -116,7 +116,7 @@ const localAuthAdapter: NexusPlugin = {
 	name: 'Local Authentication',
 	version: '1.0.0',
 	hooks: {
-		onLoad: async (context) => {
+		onLoad: async (context: PluginContext) => {
 			context.logger.info('🔑 Initializing local authentication');
 
 			const config: AuthProviderConfig = {

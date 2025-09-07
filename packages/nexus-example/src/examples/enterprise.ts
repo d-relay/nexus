@@ -1,5 +1,5 @@
 import { NexusKernel, LogLevel } from '@nexus/core';
-import type { NexusPlugin, DataSourceConfig, AuthProviderConfig } from '@nexus/core';
+import type { NexusPlugin, DataSourceConfig, AuthProviderConfig, PluginContext } from '@nexus/core';
 
 /**
  * Enterprise setup example
@@ -44,7 +44,7 @@ const postgresPlugin: NexusPlugin = {
 	name: 'PostgreSQL Database',
 	version: '1.0.0',
 	hooks: {
-		onLoad: async (context) => {
+		onLoad: async (context: PluginContext) => {
 			const config: DataSourceConfig = {
 				id: 'main-db',
 				name: 'Production Database',
@@ -73,7 +73,7 @@ const auth0Plugin: NexusPlugin = {
 	name: 'Auth0 SSO',
 	version: '1.0.0',
 	hooks: {
-		onLoad: async (context) => {
+		onLoad: async (context: PluginContext) => {
 			const config: AuthProviderConfig = {
 				id: 'auth0-sso',
 				name: 'Company SSO',

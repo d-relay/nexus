@@ -12,7 +12,10 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"test": "vitest",
-		"example:core": "tsx src/examples/demo.ts"
+		"example:demo": "tsx src/examples/demo.ts",
+		"example:startup": "tsx src/examples/startup.ts",
+		"example:enterprise": "tsx src/examples/enterprise.ts",
+		"examples": "npm run example:demo"
 	},
 	"dependencies": {
 		"@nexus/core": "file:../nexus-core"
