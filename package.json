@@ -1,0 +1,21 @@
+{
+	"name": "nexus",
+	"version": "0.0.1",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"dev": "npm run dev --workspace=nexus-example",
+		"build:core": "npm run build --workspace=nexus-core",
+		"build:example": "npm run build --workspace=nexus-example",
+		"build": "npm run build:core && npm run build:example",
+		"test:core": "npm run test --workspace=nexus-core",
+		"test:example": "npm run test --workspace=nexus-example",
+		"lint": "npm run lint --workspace=nexus-core && npm run lint --workspace=nexus-example"
+	},
+	"type": "module",
+	"engines": {
+		"node": ">=20"
+	}
+}
