@@ -2,14 +2,26 @@
  * Nexus Database Layer - Simple Drizzle ORM Integration
  */
 
-// Main database functionality
+// Main database functionality (types only for compilation)
 export {
-	createDatabase,
 	DatabaseManager,
 	databaseManager,
 	type DatabaseDriver,
-	type DatabaseConfig
-} from './drizzle-adapter';
+	type DatabaseConfig,
+	type IDatabaseManager
+} from './types-only';
+
+// Schema synchronization for existing databases
+export {
+	SchemaIntrospector,
+	createSchemaIntrospector,
+	generateSchemaFromDatabase,
+	type SchemaSyncConfig,
+	type TableInfo,
+	type ColumnInfo,
+	type ForeignKeyInfo,
+	type IndexInfo
+} from './schema-sync';
 
 // Re-export commonly used Drizzle utilities
 export type {

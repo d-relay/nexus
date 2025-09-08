@@ -34,6 +34,9 @@
 		"drizzle-orm": "^0.40.0",
 		"lucia": "^3.2.2"
 	},
+	"optionalDependencies": {
+		"drizzle-kit": "^0.30.0"
+	},
 	"peerDependencies": {
 		"pg": "^8.11.0",
 		"@types/pg": "^8.10.0",
