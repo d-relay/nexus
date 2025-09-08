@@ -16,10 +16,15 @@
 		"example:startup": "tsx src/examples/startup.ts",
 		"example:enterprise": "tsx src/examples/enterprise.ts",
 		"example:data": "tsx src/examples/data-interface-test.ts",
+		"example:database": "tsx src/examples/database-integration.ts",
+		"example:working-db": "tsx src/examples/working-database-example.ts",
+		"example:schema-sync": "tsx src/examples/schema-sync-example.ts",
 		"examples": "npm run example:demo"
 	},
 	"dependencies": {
-		"@nexus/core": "file:../nexus-core"
+		"@nexus/core": "file:../nexus-core",
+		"drizzle-orm": "^0.40.0",
+		"pg": "^8.11.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^6.1.0",
@@ -28,6 +33,7 @@
 		"@tailwindcss/forms": "^0.5.10",
 		"@tailwindcss/vite": "^4.1.13",
 		"@types/node": "^24.3.1",
+		"@types/pg": "^8.10.0",
 		"eslint": "^9.35.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.12.2",
